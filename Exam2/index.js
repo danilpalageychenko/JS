@@ -26,9 +26,9 @@ const project = {
     /* participants - predefined array of participants */
     /* pricing - predefined object (keyvalue collection) of pricing */
     init(participants, pricing) { 
-        if (this.isBusy){
-            return false
-        } 
+        // if (this.isBusy){
+        //     return false
+        // } 
         if (participants !== undefined && pricing !== undefined) {  
             if (Array.isArray(participants)){
                 this.participants = [];
@@ -143,15 +143,14 @@ const project = {
             return false
         }
         this.isBusy = true;
-        //setTimeout(() => {
+        setTimeout(() => {
             let i = 0;
             let removed = [];
             for (let arr in this.participants) {
                 i = 0;
                 for (let key in this.participants[arr]){ 
-                    //console.log(this.participants[arr][key])
                         if (Object.keys(this.participants[arr]).length == Object.keys(participantObject).length && 
-                        this.participants[arr][key] == participantObject[arr][key] ) {
+                        this.participants[arr][key] == participantObject[key] ) {
                             i++
                             if (Object.keys(participantObject).length == i)
                             {
@@ -172,7 +171,7 @@ const project = {
                 this.isBusy = false;
                 callbackFunction(null);     
             }  
-       // },100);
+        },100);
     },
 
     /* Extends this.pricing with new field or change existing */
@@ -239,12 +238,6 @@ const Singleton  = (function() {
         }
     };
 })();
-// qwe = [{seniorityLevel : 'junior'}];
-// project.init(qwe,{});
-// console.log(project.participants);
-// project.removeParticipant(qwe,()=>{});
-// console.log(project.participants);
-
 
 /* реализация */
 module.exports = {

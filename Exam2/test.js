@@ -168,7 +168,7 @@ describe('Dev-Pro OpenJS - Exam 2', () => {
         });
 
         it('It shouldn\'n remove any participant and execute callback with null on removeParticipant method call', (done) => {
-            const participants = [{ seniorityLevel: 'intermediate' }];
+            const participants = [{ seniorityLevel: 'intermediate1' }];
             project.init(participants, {});
             project.removeParticipant(participant, (removedParticipant) => {
                 expect(project.participants).toEqual(participants);
