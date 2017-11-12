@@ -62,25 +62,25 @@ const project = {
         }
         this.isBusy = true; 
         setTimeout(()=>{
-	    // for (let map in this.participants) {
-	    //     if(functor(this.participants[map])){
-	    //         this.isBusy = false;
-	    //         callbackFunction(this.participants[map]);     
-	    //         return;          
-	    //     }            
-	    // }
-	    //this.isBusy = false;
-	    //callbackFunction(null);            
-
-	    let find = this.participants.find(functor)
-	    if (find) {
-	        this.isBusy = false
-		callbackFunction(find)
-	    }
-	    else {
-		this.isBusy = false
-		callbackFunction(null)
-	    }
+            // for (let map in this.participants) {
+            //     if(functor(this.participants[map])){
+            //         this.isBusy = false;
+            //         callbackFunction(this.participants[map]);     
+            //         return;          
+            //     }            
+            // }
+            //this.isBusy = false;
+            //callbackFunction(null);            
+            
+            let find = this.participants.find(functor)
+			if (find) {
+                this.isBusy = false
+                callbackFunction(find)
+            }
+            else {
+                this.isBusy = false
+                callbackFunction(null)
+            }
         },100);
      },
 
@@ -143,14 +143,15 @@ const project = {
             return false
         }
         this.isBusy = true;
-        setTimeout(() => {
+        //setTimeout(() => {
             let i = 0;
             let removed = [];
             for (let arr in this.participants) {
                 i = 0;
                 for (let key in this.participants[arr]){ 
+                    //console.log(this.participants[arr][key])
                         if (Object.keys(this.participants[arr]).length == Object.keys(participantObject).length && 
-                        this.participants[arr][key] == participantObject[key] ) {
+                        this.participants[arr][key] == participantObject[arr][key] ) {
                             i++
                             if (Object.keys(participantObject).length == i)
                             {
@@ -171,7 +172,7 @@ const project = {
                 this.isBusy = false;
                 callbackFunction(null);     
             }  
-        },100);
+       // },100);
     },
 
     /* Extends this.pricing with new field or change existing */
@@ -238,6 +239,11 @@ const Singleton  = (function() {
         }
     };
 })();
+// qwe = [{seniorityLevel : 'junior'}];
+// project.init(qwe,{});
+// console.log(project.participants);
+// project.removeParticipant(qwe,()=>{});
+// console.log(project.participants);
 
 
 /* реализация */
