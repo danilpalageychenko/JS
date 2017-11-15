@@ -135,42 +135,39 @@ const project = {
         },100)
     },
 
-    /* push new participant into this.participants array */
-    /* callback should receive removed participant */
-    /* callbackFunction - function that will be executed with object of removed participant or null if participant wasn't found when job will be done */
+
+    // removeParticipant(participantObject, callbackFunction) {
+    //     if (this.isBusy) return false;
+    //     this.isBusy = true;
+    //     setTimeout(() => {
+    //       let removedParticipant = null;
+    //       const removeObjectIndex = this.participants.indexOf(participantObject);
+    //       if(removeObjectIndex !== -1) {
+    //         this.participants.splice(removeObjectIndex, 1);
+    //         removedParticipant = participantObject;
+    //       }
+    //       this.isBusy = false;
+    //       if(callbackFunction && typeof callbackFunction === 'function') {
+    //         callbackFunction(removedParticipant);
+    //       }
+    //     }, 100);
+    //   },
+
     removeParticipant(participantObject, callbackFunction) { 
         if (this.isBusy){
             return false
         }
         this.isBusy = true;
         setTimeout(() => {
-            let i = 0;
-            let removed = [];
+            let removed = null;
             for (let arr in this.participants) {
-                i = 0;
-                for (let key in this.participants[arr]){ 
-                        if (Object.keys(this.participants[arr]).length == Object.keys(participantObject).length && 
-                        this.participants[arr][key] == participantObject[key] ) {
-                            i++
-                            if (Object.keys(participantObject).length == i)
-                            {
-                                removed = this.participants.splice(arr, 1);
-                            }
-                        } 
-                        else {
-                            break;
-                        }
+                if (this.participants[arr] === participantObject) {
+                    removed = this.participants.splice(arr, 1)[0];
+                    break; 
                 }
             }
-            if(removed.length !== 0)
-            {
-                this.isBusy = false;
-                callbackFunction(removed[0]);
-            }
-            else {
-                this.isBusy = false;
-                callbackFunction(null);     
-            }  
+            this.isBusy = false;
+            return callbackFunction(removed);
         },100);
     },
 
@@ -224,7 +221,7 @@ const project = {
 // !!! Я ожидаю что Вы запушите файл index.js в корень предоставленного репозитория в следующем виде
 
 
-const Singleton  = (function() {
+const ProjectModule  = (function() {
     let instance;
     function createInstance() {
         return copy = Object.assign({}, project);
@@ -239,11 +236,12 @@ const Singleton  = (function() {
     };
 })();
 
+
 /* реализация */
 module.exports = {
     firstName: 'Danil',
     lastName: 'Palageychenko',
-    task: Singleton.getInstance()
+    task: ProjectModule.getInstance()
 }
 
 //Где ProjectModule это объект с методом getInstance()
