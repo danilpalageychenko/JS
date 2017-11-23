@@ -57,39 +57,36 @@ const newsFeed = {
     _isBusy: false,
 
     init(articles) {
-        if (articles !== undefined && Array.isArray(articles)) {  
+        if (this._isBusy || articles == undefined || !Array.isArray(articles) || articles.length == 0) return false;
+        else {  
             this._articles = [];
-            let length = articles.length;
-            for (let i = 0; i <= length -1 ; i++)
+            for (let i = 0; i <= articles.length -1 ; i++)
             {
-                if (articles[i].title != undefined || articles[i].content != undefined) {
+                if (articles[i].title != undefined && articles[i].content != undefined) {
                     this._articles.push(articles[i]);
                 }
                 else return false;
             }
         }
-        else return false;
     },
 
     addArticle(article, cb) {
-        if (this._isBusy || !article || article.title == undefined || article.content == undefined){
-            return false
+        if (this._isBusy || !article || article.title == undefined || article.content == undefined 
+                || typeof cb != "function") {
+                    return false
         }
         this._isBusy = true;
         setTimeout(() => {
-                let arr = {};
-                for (let key in article) {
-                    arr[key] = article[key];
-                }
                 this._articles.push(article);
                 this._isBusy = false;  
                 cb();    
-        },100)
+        })
     },
     
     removeArticle(article, cb) {
-        if (this._isBusy || article == undefined){
-            return false
+        if (this._isBusy || typeof article != "object" || article == undefined || Object.keys(article).length === 0 
+                || typeof cb != "function") {
+                    return false
         }
         this._isBusy = true;
         setTimeout(() => {
@@ -102,11 +99,11 @@ const newsFeed = {
             }
             this._isBusy = false;
             return cb(removed);
-        },100);
+        });
     },
 
     find(functor, cb) {
-        if (this._isBusy || cb == undefined || typeof functor != "function"){
+        if (this._isBusy || typeof cb != "function" || typeof functor != "function"){
             return false
         }
         this._isBusy = true; 
@@ -120,7 +117,7 @@ const newsFeed = {
                 this._isBusy = false
                 cb(null)
             }
-        },100);
+        });
     },
 
 // query(queryString) {  
@@ -176,10 +173,9 @@ const newsFeed = {
 //Выше сортировка на базе сортировки пузырьком(рабочая)! 
 
     query(queryString) {  
-        if (typeof queryString != "string" && queryString == undefined){
+        if (this._isBusy && typeof queryString != "string" && queryString == undefined){
             return false;
         }
-
         function onlyUnique(value, index, self) {
             self[index] == [] ? delete self[index] : self[index];
             return self.indexOf(value) === index;
@@ -223,6 +219,28 @@ const ProjectModule  = (function() {
     };
 })();
 
+newsFeed.init([
+    {
+        /* 4 hits */
+        title: 'hit hit',
+        content: 'hit hit'
+    },
+    {
+        /* 5 hits */
+        title: 'hit hit hit',
+        content: 'hit hit'
+    },
+    {
+        /* no hits */
+        title: 'no',
+        content: 'no'
+    },
+    {
+        /* no hits */
+        title: 'no',
+        content: 'no'
+    },
+]);
 
 /* реализация */
 module.exports = {
