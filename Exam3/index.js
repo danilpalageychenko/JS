@@ -173,7 +173,7 @@ const newsFeed = {
 //Выше сортировка на базе сортировки пузырьком(рабочая)! 
 
     query(queryString) {  
-        if (this._isBusy && typeof queryString != "string" && queryString == undefined){
+        if (this._isBusy || typeof queryString != "string" || queryString == undefined){
             return false;
         }
         function onlyUnique(value, index, self) {
@@ -191,8 +191,8 @@ const newsFeed = {
                 (this._articles[articl].content.split(' '))).match(regExp) || []).length}; 
             totalCounter += counter[articl].res;
         }
-
         if (totalCounter == 0) return [];
+
         counter.sort((a,b) => {return b.res - a.res});
         for (let i=0; i<this._articles.length-1;i++) {
             if (counter[i].res != 0)
@@ -200,7 +200,7 @@ const newsFeed = {
                 result.push(this._articles[counter[i].index]);  
             }
         } 
-       return result;
+        return result;
     }
 };
 
@@ -218,29 +218,6 @@ const ProjectModule  = (function() {
         }
     };
 })();
-
-newsFeed.init([
-    {
-        /* 4 hits */
-        title: 'hit hit',
-        content: 'hit hit'
-    },
-    {
-        /* 5 hits */
-        title: 'hit hit hit',
-        content: 'hit hit'
-    },
-    {
-        /* no hits */
-        title: 'no',
-        content: 'no'
-    },
-    {
-        /* no hits */
-        title: 'no',
-        content: 'no'
-    },
-]);
 
 /* реализация */
 module.exports = {
